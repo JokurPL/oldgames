@@ -1,19 +1,20 @@
-// Filename: router.js
 define([
   'jquery',
   'underscore',
   'backbone',
+  'views/menu/MenuView',
   'views/home/HomeView',
-  'views/projects/ProjectsView',
-  'views/contributors/ContributorsView',
+  'views/services/ServicesView',
+  'views/categories/CategoriesView',
   'views/footer/FooterView'
-], function($, _, Backbone, HomeView, ProjectsView, ContributorsView, FooterView) {
+], function($, _, Backbone, MenuView,  HomeView, ServicesView, CategoriesView, FooterView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
-      'projects': 'showProjects',
-      'users': 'showContributors',
+      'categories': 'showCategories',
+      'service': 'showService',
+      'contact': 'showContact',
       
       // Default
       '*actions': 'defaultAction'
@@ -24,35 +25,44 @@ define([
 
     var app_router = new AppRouter;
 
-    app_router.on('route:showProjects', function(){
-   
-        // Call render on the module we loaded in via the dependency array
-        var projectsView = new ProjectsView();
-        projectsView.render();
+    var menuPosition = 0;
+
+    app_router.on('route:showCategories', function(){
+        var categoriesView = new CategoriesView();
 
     });
 
-    app_router.on('route:showContributors', function () {
-    
-        // Like above, call render but know that this view has nested sub views which 
-        // handle loading and displaying data from the GitHub API  
-        var contributorsView = new ContributorsView();
+    app_router.on('route:showService', function () {
+        var servicesView = new ServicesView();
     });
+
+      app_router.on('route:showContact', function(){
+
+          //var projectsView = new ProjectsView();
+          //projectsView.render();
+
+      });
 
     app_router.on('route:defaultAction', function (actions) {
-     
-       // We have no matching route, lets display the home page 
+
         var homeView = new HomeView();
         homeView.render();
     });
 
-    // Unlike the above, we don't call render on this view as it will handle
-    // the render call internally after it loads data. Further more we load it
-    // outside of an on-route function to have it loaded no matter which page is
-    // loaded initially.
+
+      Backbone.history.start();
+
+      var position = {
+          'showCategories' : 1,
+          'showService' : 2
+      }
+
+    var menuView = new MenuView();
+    menuView.setPosition( position[app_router.routes[Backbone.history.fragment]] );
+    menuView.render();
+
     var footerView = new FooterView();
 
-    Backbone.history.start();
   };
   return { 
     initialize: initialize
