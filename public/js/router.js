@@ -1,70 +1,108 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'views/menu/MenuView',
-  'views/home/HomeView',
-  'views/services/ServicesView',
-  'views/categories/CategoriesView',
-  'views/footer/FooterView'
-], function($, _, Backbone, MenuView,  HomeView, ServicesView, CategoriesView, FooterView) {
-  
-  var AppRouter = Backbone.Router.extend({
-    routes: {
-      // Define some URL routes
-      'categories': 'showCategories',
-      'service': 'showService',
-      'contact': 'showContact',
-      
-      // Default
-      '*actions': 'defaultAction'
-    }
-  });
-  
-  var initialize = function(){
+    'jquery',
+    'underscore',
+    'backbone',
+    'views/menu/MenuView',
+    'views/home/HomeView',
+    'views/pages/PagesView',
+    'views/categories/CategoriesView',
+    'views/games/GameView',
+    'views/games/GamesListView',
+    'views/footer/FooterView'
+], function($, _, Backbone, MenuView,  HomeView, PagesView, CategoriesView, GameView, GamesListView, FooterView) {
 
-    var app_router = new AppRouter;
+    var AppRouter = Backbone.Router.extend({
+        routes: {
+            'categories': 'showCategories',
+            'c/:id/:category' : 'gameByCategory',
+            'c/:id/:category/:page' : 'gameByCategory',
+            'g/:id/:name' : 'getGame',
+            'p/:name': 'showPage',
+            'contact': 'showContact',
 
-    var menuPosition = 0;
-
-    app_router.on('route:showCategories', function(){
-        var categoriesView = new CategoriesView();
-
+            // Default
+            '*actions': 'defaultAction',
+            '*actions/:page': 'defaultAction'
+        }
     });
 
-    app_router.on('route:showService', function () {
-        var servicesView = new ServicesView();
-    });
+    var initialize = function(){
 
-      app_router.on('route:showContact', function(){
+        var app_router = new AppRouter;
 
-          //var projectsView = new ProjectsView();
-          //projectsView.render();
+        app_router.on('all', function(){
+            $('#navLeft').css({display:'none'});
+            $('#navRight').css({display:'none'});
+        });
 
-      });
+        app_router.on('route:showCategories', function(){
+            var categoriesView = new CategoriesView();
 
-    app_router.on('route:defaultAction', function (actions) {
+        });
 
-        var homeView = new HomeView();
-        homeView.render();
-    });
+        app_router.on('route:gameByCategory', function(id, category, page){
+            var gamesListView = new GamesListView({
+                'categoryId' : id,
+                'categoryName' : category,
+                'page' : page
+            });
+        });
+
+        app_router.on('route:getGame', function(id, name){
+            var gameView = new GameView({
+                'gameId' : id,
+                'gameName' : name
+            });
+        });
+
+        app_router.on('route:showPage', function (name) {
+            var pageView = new PagesView(name);
+        });
+
+        app_router.on('route:showContact', function(){
+
+            //var projectsView = new ProjectsView();
+            //projectsView.render();
+
+        });
+
+        app_router.on('route:defaultAction', function (page) {
+            var homeView = new HomeView({
+                page : page
+            });
+        });
 
 
-      Backbone.history.start();
+        Backbone.history.start();
+        //$(document.body).on('click', 'a', function(e){
+        //    e.preventDefault();
+        //    Backbone.history.navigate(e.currentTarget.pathname, {trigger: true});
+        //});
 
-      var position = {
-          'showCategories' : 1,
-          'showService' : 2
-      }
+        var position = {
+            'showCategories' : 1,
+            'gameByCategory' : 1,
+            'showService' : 2
+        };
 
-    var menuView = new MenuView();
-    menuView.setPosition( position[app_router.routes[Backbone.history.fragment]] );
-    menuView.render();
+        var posMenu = 0;
+        if(
+            /c\/[0-9]{1,9}\/.*/.test( Backbone.history.fragment ) ||
+            /g\/[0-9]{1,9}\/.*/.test( Backbone.history.fragment )
+        ) {
+            posMenu = position.gameByCategory;
+        } else {
+            posMenu = position[app_router.routes[Backbone.history.fragment]]
+        }
 
-    var footerView = new FooterView();
+        var menuView = new MenuView({
+            position: posMenu
+        });
 
-  };
-  return { 
-    initialize: initialize
-  };
+        var footerView = new FooterView();
+
+    };
+    return {
+        initialize: initialize
+    };
 });

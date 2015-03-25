@@ -1,14 +1,10 @@
 <!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
 
-	<title></title>
-	<meta name="description" content="">
-	<meta name="author" content="">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="author" content="">
     <style type="text/css">
         @font-face {
             font-family: 'Open Sans';
@@ -25,11 +21,13 @@
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
         }
     </style>
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 
-	<script data-main="js/main" src="js/libs/require/require.js"></script>
+    <script data-main="js/main" src="js/libs/require/require.js"></script>
 </head>
 <body>
 
@@ -40,14 +38,33 @@
 </div>
 
 
-<div id="menu">
+<nav class="navbar navbarOver navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <div class="navbar-toggle navbar-toggleOver collapsed smallMenu" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 
+
+
+            </div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <div id="menu">
+
+            </div>
+        </div>
+    </div>
+</nav>
+<!--<div id="grain"></div>-->
+<div class="container" id="content">
 </div>
 
-<div id="content">
-</div>
 
-<div id="footer"></div>
+
+<a id="navLeft" href="#" class="navi">&lsaquo;</a>
+<a id="navRight" href="#" class="navi">&rsaquo;</a>
+
+<footer id="footer" class="footer">
+</footer>
 
 </body>
 </html>

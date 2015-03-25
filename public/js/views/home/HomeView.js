@@ -1,27 +1,43 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'text!templates/home/homeTemplate.html'
-], function($, _, Backbone, homeTemplate){
+    'jquery',
+    'underscore',
+    'backbone',
+    'collections/news/NewsListCollection',
+    'text!templates/home/homeTemplate.html'
+], function($, _, Backbone, NewsListCollection, homeTemplate){
 
-  var HomeView = Backbone.View.extend({
-    el: $("#content"),
+    var HomeView = Backbone.View.extend({
+        el: $("#content"),
 
-    render: function(){
-      
-      //$('.menu li').removeClass('active');
-      //$('.menu li a[href="#"]').parent().addClass('active');
-      //this.$el.html(homeTemplate);
+        initialize:function(options) {
+
+            var that = this;
+            var onDataHandler = function(collection) {
+                that.render();
+            };
+
+            this.page = parseInt( options.page ) || 1;
+
+            that.collection = new NewsListCollection([],options);
+            that.collection.fetch({ success : onDataHandler, dataType: "json" });
+
+        },
+
+        render: function(){
 
 
-      //var sidebarView = new SidebarView();
-      //sidebarView.render();
- 
-    }
+            var data = {
+                news : this.collection.models
+            };
 
-  });
+            var compiledTemplate = _.template( homeTemplate,{variable: 'data'} )(data);
+            this.$el.html( compiledTemplate );
 
-  return HomeView;
-  
+
+        }
+
+    });
+
+    return HomeView;
+
 });

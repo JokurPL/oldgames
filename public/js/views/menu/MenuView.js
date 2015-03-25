@@ -15,21 +15,37 @@ define([
 
         el: $("#menu"),
 
-        initialize: function() {
+        menuSmall : $('.smallMenu'),
 
+        initialize: function( option ) {
+            this.position = option.position;
+
+            this.render();
         },
 
         render: function(){
+            var that = this;
+            var menuTemplateCpy = menuTemplate;
 
-            var compiledTemplate = _.template( menuTemplate );
+            var tmpMenu = '';
+            var leftValue = 0;
+            var tmpMenu = '<div class="mario"></div>';
+            $(menuTemplate).filter('div').each( function( key, item ) {
+                leftValue = 200 * key;
+                item.setAttribute('style', 'left:' + leftValue + 'px;');
+
+                tmpMenu += that.outerHTML( item );
+            } );
+
+            this.menuSmall.html( menuTemplateCpy );
+            var compiledTemplate = _.template( tmpMenu );
             this.$el.html(compiledTemplate);
-
             dykMenu.menuAction( this.$el, this.position );
+
         },
 
-        setPosition : function( position ) {
-
-            this.position = position;
+        outerHTML : function(node){
+            return node.outerHTML || new XMLSerializer().serializeToString(node);
         }
 
 

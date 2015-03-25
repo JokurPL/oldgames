@@ -1,0 +1,14 @@
+<ul class="gamesList row">
+
+    <% _.each(data.games, function(game){ %>
+    <li class="slideLeft over">
+            <img src="http://staregry.dyk.pl/images/<%= game.get('screen') %>" />
+            <div class="mask">
+                <h2><a href="/#/g/<%= game.get("id") %>/<%= game.get("nazwa_link") %>"><%= game.get("nazwa_gry") %> &raquo;</a></h2>
+                <p><div class="gr <%= game.get("platforma") %>"></div></p>
+            </div>
+    </li>
+    <% }); %>
+</ul>
+
+<div class="clearfix"></div>

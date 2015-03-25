@@ -27,12 +27,7 @@ define([
     render: function(){
 
         var data = {
-            contributors: this.collection.models,
-            test : 1
-        };
-
-        var data = {
-            projects: this.collection.models
+            categories: this.collection.models
         };
 
         var compiledTemplate = _.template( categoriesTemplate,{variable: 'data'} )(data);
