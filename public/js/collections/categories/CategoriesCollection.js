@@ -11,7 +11,7 @@ define([
       initialize : function(models, options) {},
       
       url : function() {
-        return APP_URL + '/categories';
+        return '/categories';
       },
     
       parse : function(data) {

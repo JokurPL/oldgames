@@ -22,7 +22,7 @@ define([
       },
       
       url : function() {
-        return APP_URL + '/categories/' + this.categorySlug + '/' + this.page;
+        return '/categories/' + this.categorySlug + '/' + this.page;
       },
     
       parse : function(data) {

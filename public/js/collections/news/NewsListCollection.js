@@ -18,7 +18,7 @@ define([
       },
       
       url : function() {
-        return APP_URL + '/home/' + this.page;
+        return '/home/' + this.page;
       },
     
       parse : function(data) {

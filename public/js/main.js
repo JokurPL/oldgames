@@ -1,4 +1,3 @@
-var APP_URL = 'http://www.sgry.pl';
 var APP_HTTP_STARTED = true;
 
 require.config({
