@@ -4,8 +4,10 @@ define([
     'underscore',
     'backbone',
     'router',
-], function($, _, Backbone, Router){
+    'dykmeta',
+], function($, _, Backbone, Router, dykMeta){
     var initialize = function(){
+        //dykMeta.setMeta();
         Router.initialize();
     };
 

@@ -2,18 +2,25 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'mustache',
+    'dykmeta',
     'collections/games/GameCollection',
-    'text!templates/games/gameTemplate.html'
-], function($, _, Backbone, GameCollection, gameTemplate){
+    'text!templates/games/index.mustache'
+], function($, _, Backbone, Mustache, dykMeta, GameCollection, gameTemplate){
 
 
     var GameView = Backbone.View.extend({
 
         el: $("#content"),
-        gameId : 0,
+        gameSlug : '',
         gameName : '',
 
         initialize:function(options) {
+
+            if( APP_HTTP_STARTED ) {
+                APP_HTTP_STARTED = false;
+                return;
+            }
 
             var that = this;
 
@@ -21,8 +28,7 @@ define([
                 that.render();
             };
 
-            this.gameId = options.gameId;
-            this.gameName = options.gameName;
+            this.gameSlug = options.gameSlug;
 
             that.collection = new GameCollection([],options);
             that.collection.fetch({ success : onDataHandler, dataType: "json" });
@@ -31,13 +37,16 @@ define([
 
         render: function() {
 
+            var game = this.collection.first();
 
-            var data = {
-                game : _(this.collection.models).first()
-            };
+            dykMeta.setMeta({
+                title : game.get('name') + ' - ' + game.get('cat_name'),
+                description : 'Stara gra ' + game.get('name') + ' z kategorii ' + game.get('cat_name'),
+                keywords : game.get('name') + ' - ' + game.get('cat_name')
+            });
 
+            var compiledTemplate = Mustache.render(gameTemplate, game.toJSON() );
 
-            var compiledTemplate = _.template( gameTemplate,{variable: 'data'} )(data);
             this.$el.html( compiledTemplate );
 
             return this;

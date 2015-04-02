@@ -2,9 +2,11 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'mustache',
+    'dykmeta',
     'collections/games/GamesListCollection',
-    'text!templates/games/gamesListTemplate.html'
-], function($, _, Backbone, GamesListCollection, gamesListTemplate){
+    'text!templates/games/list.mustache'
+], function($, _, Backbone, Mustache, dykMeta, GamesListCollection, gamesListTemplate){
 
 
     var GamesListView = Backbone.View.extend({
@@ -12,19 +14,23 @@ define([
         el: $("#content"),
         page : 1,
         pack : 0,
-        categoryId : 0,
-        categoryName : '',
+        categorySlug : '',
 
         initialize:function(options) {
+
+            if( APP_HTTP_STARTED ) {
+                APP_HTTP_STARTED = false;
+                return;
+            }
 
             var that = this;
             var onDataHandler = function(collection) {
                 that.render();
             };
 
+
             this.page = parseInt( options.page ) || 1;
-            this.categoryId = options.categoryId;
-            this.categoryName = options.categoryName;
+            this.categorySlug = options.categorySlug;
 
             that.collection = new GamesListCollection([],options);
             that.collection.fetch({ success : onDataHandler, dataType: "json" });
@@ -36,14 +42,20 @@ define([
 
             this.pack = Math.ceil( this.collection.count / 30 );
 
+
+            dykMeta.setMeta({
+                title : this.collection.categoryName,
+                description : 'Kategoria starych gier ' + this.collection.categoryName,
+                keywords : this.collection.categoryName
+            });
+
+
+            var compiledTemplate = Mustache.render(gamesListTemplate, { games: this.collection.toJSON() });
+
+            this.$el.html( compiledTemplate );
+
             this.navigation();
 
-            var data = {
-                games : this.collection.models
-            };
-
-            var compiledTemplate = _.template( gamesListTemplate,{variable: 'data'} )(data);
-            this.$el.html( compiledTemplate );
 
             return this;
 
@@ -51,8 +63,15 @@ define([
 
         navigation : function() {
 
-            var navLeft = $('#navLeft');
-            var navRight = $('#navRight');
+            var naviCont = $('#naviCont');
+
+            naviCont.css({
+                display: 'block'
+            });
+
+            var navLeft = naviCont.find('.prevPage');
+            var navRight = naviCont.find('.nextPage');
+            var infoPage = naviCont.find('.infoPage');
 
             var forLeft = this.page;
             var toRight = this.page + 1;
@@ -72,16 +91,15 @@ define([
 
 
             navLeft.attr({
-                href : '/#/c/' + this.categoryId + '/' + this.categoryName + '/' + forLeft
+                href : '/categories/' + this.categorySlug + '/' + forLeft
             });
-
-            //console.log( naviLeft.attr
 
             navRight.attr({
-                href : '/#/c/' + this.categoryId + '/' + this.categoryName + '/' + toRight
+                href : '/categories/' + this.categorySlug + '/' + toRight
             });
-        }
 
+            infoPage.html( this.page + ' / ' + this.pack);
+        }
 
     });
     return GamesListView;

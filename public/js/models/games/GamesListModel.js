@@ -7,7 +7,8 @@ define([
 
         defaults : {
             count : 0,
-            games : []
+            games : [],
+            categoryName : ''
         }
 
     });

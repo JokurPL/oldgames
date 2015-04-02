@@ -24,22 +24,23 @@ define([
         },
 
         render: function(){
-            var that = this;
-            var menuTemplateCpy = menuTemplate;
+            //var that = this;
+            //var menuTemplateCpy = menuTemplate;
 
-            var tmpMenu = '';
-            var leftValue = 0;
-            var tmpMenu = '<div class="mario"></div>';
-            $(menuTemplate).filter('div').each( function( key, item ) {
-                leftValue = 200 * key;
-                item.setAttribute('style', 'left:' + leftValue + 'px;');
+            //var tmpMenu = '';
+            //var leftValue = 0;
+            //var tmpMenu = '<div class="mario"></div>';
 
-                tmpMenu += that.outerHTML( item );
-            } );
+            //$(menuTemplate).filter('div').each( function( key, item ) {
+            //    leftValue = 200 * key;
+            //    item.setAttribute('style', 'left:' + leftValue + 'px;');
+            //
+            //    tmpMenu += that.outerHTML( item );
+            //} );
 
-            this.menuSmall.html( menuTemplateCpy );
-            var compiledTemplate = _.template( tmpMenu );
-            this.$el.html(compiledTemplate);
+            //this.menuSmall.html( menuTemplateCpy );
+            //var compiledTemplate = _.template( tmpMenu );
+            //this.$el.html(compiledTemplate);
             dykMenu.menuAction( this.$el, this.position );
 
         },

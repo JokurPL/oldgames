@@ -1,0 +1,31 @@
+<div class="textCont slideLeft">
+    <div class="translucent"></div>
+    <div class="contAll">
+
+        <h1>Stare gry - newsy ze świata gier</h1>
+
+        {{#news}}
+        <h2><small>{{title}}</small></h2>
+        <p>{{{content}}}
+            <br><small>Dodano: {{created_at}}</small></p>
+
+        <hr class="opa5">
+        {{/news}}
+
+
+        <div id="naviCont">
+            {{^hideLeft}}
+            <a href="/home/{{toLeft}}" class="prevPage">&lsaquo;</a>
+            {{/hideLeft}}
+            <div class="infoPage"><strong>{{page}}</strong> / {{pack}}</div>
+
+            {{^hideRight}}
+            <a href="/home/{{toRight}}" class="nextPage">&rsaquo;</a>
+            {{/hideRight}}
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+

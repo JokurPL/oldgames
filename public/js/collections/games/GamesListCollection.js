@@ -8,24 +8,26 @@ define([
       
       model: GamesListModel,
 
-      categoryId : 0,
       page : 1,
       count : 0,
+      categorySlug : '',
+      categoryName : '',
 
       initialize : function(models, options) {
 
-          this.categoryId = options.categoryId;
+          this.categorySlug = options.categorySlug;
 
           this.page = options.page || 1;
 
       },
       
       url : function() {
-        return '/api.php?w=gamesList&id=' + this.categoryId + '&page=' + this.page;
+        return APP_URL + '/categories/' + this.categorySlug + '/' + this.page;
       },
     
       parse : function(data) {
           this.count = data.count;
+          this.categoryName = data.categoryName;
           return data.games;
       }
 

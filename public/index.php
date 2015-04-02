@@ -1,70 +1,61 @@
-<!doctype html>
-<head>
-    <meta charset="utf-8">
+<?php
+/**
+ * Laravel - A PHP Framework For Web Artisans
+ *
+ * @package  Laravel
+ * @author   Taylor Otwell <taylorotwell@gmail.com>
+ */
 
-    <title></title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <style type="text/css">
-        @font-face {
-            font-family: 'Open Sans';
-            font-style: normal;
-            font-weight: 400;
-            src: local('Open Sans'), local('OpenSans'), url(http://fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-        }
-        @font-face {
-            font-family: 'Open Sans';
-            font-style: normal;
-            font-weight: 600;
-            src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(http://fonts.gstatic.com/s/opensans/v10/MTP_ySUJH_bn48VBG8sNSugdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-        }
-    </style>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader for
+| our application. We just need to utilize it! We'll simply require it
+| into the script here so that we don't have to worry about manual
+| loading any of our classes later on. It feels nice to relax.
+|
+*/
 
-    <link rel="stylesheet" href="css/styles.css">
+require __DIR__.'/../bootstrap/autoload.php';
 
-    <script data-main="js/main" src="js/libs/require/require.js"></script>
-</head>
-<body>
+/*
+|--------------------------------------------------------------------------
+| Turn On The Lights
+|--------------------------------------------------------------------------
+|
+| We need to illuminate PHP development, so let us turn on the lights.
+| This bootstraps the framework and gets it ready for use, then it
+| will load up this application so that we can run it and send
+| the responses back to the browser and delight our users.
+|
+*/
 
-<a class="logo"></a>
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
-<div class="wrap">
-    <div class="cloud"></div>
-</div>
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request
+| through the kernel, and send the associated response back to
+| the client's browser allowing them to enjoy the creative
+| and wonderful application we have prepared for them.
+|
+*/
 
+//error_reporting(E_ALL | E_STRICT);
+//ini_set('display_startup_errors', 1);
+//ini_set('display_errors', 1);
 
-<nav class="navbar navbarOver navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-            <div class="navbar-toggle navbar-toggleOver collapsed smallMenu" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+$kernel = $app->make('Illuminate\Contracts\Http\Kernel');
 
+$response = $kernel->handle(
+	$request = Illuminate\Http\Request::capture()
+);
 
+$response->send();
 
-            </div>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <div id="menu">
-
-            </div>
-        </div>
-    </div>
-</nav>
-<!--<div id="grain"></div>-->
-<div class="container" id="content">
-</div>
-
-
-
-<a id="navLeft" href="#" class="navi">&lsaquo;</a>
-<a id="navRight" href="#" class="navi">&rsaquo;</a>
-
-<footer id="footer" class="footer">
-</footer>
-
-</body>
-</html>
+$kernel->terminate($request, $response);

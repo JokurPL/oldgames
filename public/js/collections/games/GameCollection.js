@@ -8,16 +8,16 @@ define([
       
       model: GameModel,
 
-      gameId : 0,
+      gameSlug : '',
 
       initialize : function(models, options) {
 
-          this.gameId = options.gameId;
+          this.gameSlug = options.gameSlug;
 
       },
       
       url : function() {
-        return '/api.php?w=game&id=' + this.gameId;
+        return '/game/' + this.gameSlug;
       },
     
       parse : function(data) {

@@ -1,49 +1,58 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'collections/categories/CategoriesCollection',
-  'text!templates/categories/categoriesTemplate.html'
-], function($, _, Backbone, CategoriesCollection, categoriesTemplate){
+    'jquery',
+    'underscore',
+    'backbone',
+    'mustache',
+    'dykmeta',
+    'collections/categories/CategoriesCollection',
+    'text!templates/categories/index.mustache'
+], function($, _, Backbone, Mustache, dykMeta, CategoriesCollection, categoriesTemplate){
 
 
-  var CategoriesView = Backbone.View.extend({
-    
-    el: $("#content"),
+    var CategoriesView = Backbone.View.extend({
 
-    initialize:function() {
+        el: $("#content"),
 
-      var that = this;
+        initialize:function() {
 
-      var onDataHandler = function(collection) {
-          that.render();
-      }
+            if( APP_HTTP_STARTED ) {
+                APP_HTTP_STARTED = false;
+                return;
+            }
 
-      that.collection = new CategoriesCollection([]);
-      that.collection.fetch({ success : onDataHandler, dataType: "json" });
+            var that = this;
 
-    },
+            var onDataHandler = function(collection) {
+                that.render();
+            }
 
-    render: function(){
+            that.collection = new CategoriesCollection([]);
+            that.collection.fetch({ success : onDataHandler, dataType: "json" });
 
-        var data = {
-            categories: this.collection.models
-        };
+        },
 
-        var compiledTemplate = _.template( categoriesTemplate,{variable: 'data'} )(data);
-        this.$el.html( compiledTemplate );
+        render: function(){
 
-        return this;
+            var keywords = [];
+            _.each(this.collection.models,function( elem ){
+                keywords.push( elem.get('dzial') );
+            });
 
-    }
+            dykMeta.setMeta({
+                title : 'Kategorie gier',
+                keywords : 'stare gry,' + keywords.join()
+            });
 
-    //clearListView: function() {
-    //  console.log("clearing sub view");
-    //  contributorsListView.clearListView();
-    //}
+            var compiledTemplate = Mustache.render(categoriesTemplate, { categories: this.collection.toJSON() });
+
+            this.$el.html( compiledTemplate );
 
 
+            return this;
 
-  });
-  return CategoriesView;
+        }
+
+
+    });
+    return CategoriesView;
 });

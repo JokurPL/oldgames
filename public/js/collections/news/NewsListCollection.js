@@ -18,7 +18,7 @@ define([
       },
       
       url : function() {
-        return '/api.php?w=newsList&page=' + this.page;
+        return APP_URL + '/home/' + this.page;
       },
     
       parse : function(data) {

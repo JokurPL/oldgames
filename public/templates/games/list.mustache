@@ -1,0 +1,26 @@
+<ul class="gamesList row">
+
+    {{#games}}
+    <li class="slideLeft over">
+            <img src="http://staregry.dyk.pl/images/{{screen}}" />
+            <div class="mask">
+                <h2><a href="/game/{{slug}}">{{name}} &raquo;</a></h2>
+                <p><div class="gr {{platform}}"></div></p>
+            </div>
+    </li>
+    {{/games}}
+</ul>
+
+
+<div id="naviCont">
+    {{^hideLeft}}
+    <a href="/categories/{{slug}}/{{toLeft}}" class="prevPage">&lsaquo;</a>
+    {{/hideLeft}}
+    <div class="infoPage"><strong>{{page}}</strong> / {{pack}}</div>
+
+    {{^hideRight}}
+    <a href="/categories/{{slug}}/{{toRight}}" class="nextPage">&rsaquo;</a>
+    {{/hideRight}}
+</div>
+
+<div class="clearfix"></div>

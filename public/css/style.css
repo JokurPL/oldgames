@@ -473,3 +473,29 @@ h2 small:hover {
     opacity: 0.5;
     filter:alpha(opacity=50);
 }
+#naviCont {
+    color: #fff;
+    width: 150px;
+    height: 38px;
+    margin: 10px auto;
+    line-height: 20px;
+}
+#naviCont a.prevPage {
+    float: left;
+    width: 20px;
+    cursor: pointer;
+    font-size: 80px;
+}
+#naviCont a.nextPage {
+    float: right;
+    width: 20px;
+    cursor: pointer;
+    font-size: 80px;
+}
+#naviCont .infoPage {
+    float: left;
+    width:110px;
+    text-align: center;
+    font-size: 33px;
+    line-height: 37px;
+}

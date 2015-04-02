@@ -14,15 +14,13 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             'categories': 'showCategories',
-            'c/:id/:category' : 'gameByCategory',
-            'c/:id/:category/:page' : 'gameByCategory',
-            'g/:id/:name' : 'getGame',
+            'categories/:categorySlug' : 'gameByCategory',
+            'categories/:categorySlug/:page' : 'gameByCategory',
+            'game/:name' : 'getGame',
             'p/:name': 'showPage',
             'contact': 'showContact',
-
-            // Default
-            '*actions': 'defaultAction',
-            '*actions/:page': 'defaultAction'
+            'home/:page': 'showNews',
+            '*actions': 'defaultAction'
         }
     });
 
@@ -30,33 +28,28 @@ define([
 
         var app_router = new AppRouter;
 
-        app_router.on('all', function(){
-            $('#navLeft').css({display:'none'});
-            $('#navRight').css({display:'none'});
-        });
-
         app_router.on('route:showCategories', function(){
             var categoriesView = new CategoriesView();
 
         });
 
-        app_router.on('route:gameByCategory', function(id, category, page){
+        app_router.on('route:gameByCategory', function(categorySlug, page){
             var gamesListView = new GamesListView({
-                'categoryId' : id,
-                'categoryName' : category,
+                'categorySlug' : categorySlug,
                 'page' : page
             });
         });
 
-        app_router.on('route:getGame', function(id, name){
+        app_router.on('route:getGame', function(name){
             var gameView = new GameView({
-                'gameId' : id,
-                'gameName' : name
+                'gameSlug' : name
             });
         });
 
         app_router.on('route:showPage', function (name) {
-            var pageView = new PagesView(name);
+            var pageView = new PagesView({
+                pageName : name
+            });
         });
 
         app_router.on('route:showContact', function(){
@@ -66,31 +59,39 @@ define([
 
         });
 
-        app_router.on('route:defaultAction', function (page) {
+        app_router.on('route:showNews', function (page) {
             var homeView = new HomeView({
                 page : page
             });
         });
 
+        app_router.on('route:defaultAction', function () {
+            var homeView = new HomeView();
+        });
 
-        Backbone.history.start();
-        //$(document.body).on('click', 'a', function(e){
-        //    e.preventDefault();
-        //    Backbone.history.navigate(e.currentTarget.pathname, {trigger: true});
-        //});
+        Backbone.history.start({ pushState: true });
+        $(document.body).on('click', 'a', function(e){
+            e.preventDefault();
+            Backbone.history.navigate(e.currentTarget.pathname, {trigger: true});
+        });
 
         var position = {
             'showCategories' : 1,
             'gameByCategory' : 1,
-            'showService' : 2
+            'showPage' : 2
         };
 
         var posMenu = 0;
         if(
-            /c\/[0-9]{1,9}\/.*/.test( Backbone.history.fragment ) ||
-            /g\/[0-9]{1,9}\/.*/.test( Backbone.history.fragment )
+            /categories\/.*/.test( Backbone.history.fragment ) ||
+            /game\/.*/.test( Backbone.history.fragment )
         ) {
             posMenu = position.gameByCategory;
+
+        } else if(
+            /p\/.*/.test( Backbone.history.fragment )
+        ) {
+            posMenu = position.showPage;
         } else {
             posMenu = position[app_router.routes[Backbone.history.fragment]]
         }
@@ -100,7 +101,6 @@ define([
         });
 
         var footerView = new FooterView();
-
     };
     return {
         initialize: initialize
