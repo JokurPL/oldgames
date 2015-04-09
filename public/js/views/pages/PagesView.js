@@ -2,9 +2,11 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'mustache',
     'dykmeta',
-    'text!templates/pages/pageTemplate.html'
-], function($, _, Backbone, dykMeta, pageTemplate){
+    'collections/pages/PageCollection',
+    'text!templates/pages/index.mustache'
+], function($, _, Backbone, Mustache, dykMeta, PageCollection, pageTemplate){
 
 
     var PagesView = Backbone.View.extend({
@@ -14,37 +16,37 @@ define([
 
         initialize:function(options) {
 
-            this.pageName = options.pageName;
+            if( APP_HTTP_STARTED ) {
+                APP_HTTP_STARTED = false;
+                return;
+            }
 
+            var that = this;
 
-            this.render();
+            var onDataHandler = function(collection) {
+                that.render();
+            };
+
+            this.pageSlug = options.pageSlug;
+
+            that.collection = new PageCollection([],options);
+            that.collection.fetch({ success : onDataHandler, dataType: "json" });
         },
 
         render: function(){
 
-            var data = {
-                pageName : this.pageName
-            };
+            var page = this.collection.first().toJSON();
+
+
 
             dykMeta.setMeta({
-                title : this.pageName
+                title : page.name,
+                keywords : page.name,
+                description : page.name
             });
 
-            var tplUrl = '/templates/pages/' + this.pageName + 'Template.html';
 
-
-            var tplData = pageTemplate;
-
-            $.ajax({
-                url: tplUrl,
-                method: 'GET',
-                async: false,
-                success: function(data) {
-                    tplData = data;
-                }
-            });
-
-            var compiledTemplate = _.template( tplData, {variable: 'data'} )(data);
+            var compiledTemplate = Mustache.render(pageTemplate, page );
             this.$el.html(compiledTemplate);
 
 

@@ -10,6 +10,7 @@ DYKMeta.setMeta = function(options) {
 
     var staticStr = 'Stare gry, za darmo, mario, download, klasyka gier, abandonware, pc, pegasus, commodore, atari, staregry.dyk.pl';
     var staticKeyStr = 'stare gry, klasyka gier, stare gry na pc-ta, gry, old games, commodore, atarii, pegasus';
+    var staticDescStr = 'stare gry klasyka gier w serwisie staregry.dyk.pl - najepsza klasyka gier i stare gry';
 
 
     if( !options.hasOwnProperty('title') ) {
@@ -18,7 +19,11 @@ DYKMeta.setMeta = function(options) {
         options.title = options.title + ' - ' + staticStr;
     }
 
-    options.description = options.description || 'stare gry klasyka gier w serwisie staregry.dyk.pl - najepsza klasyka gier i stare gry';
+    if( !options.hasOwnProperty('description') ) {
+        options.description = staticDescStr;
+    } else {
+        options.description = options.description + ' - ' + staticDescStr;
+    }
 
     if( !options.hasOwnProperty('keywords') ) {
         options.keywords = staticKeyStr;
@@ -36,7 +41,7 @@ DYKMeta.setMeta = function(options) {
 
     keywords.attr( 'content', options.keywords );
 
-    description.text( 'content', options.description );
+    description.attr( 'content', options.description );
 
 };
 

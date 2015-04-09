@@ -3,6 +3,8 @@
 use App\News;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
+use PhpSpec\Exception\Exception;
 
 class HomeController extends BaseController{
 
@@ -10,6 +12,8 @@ class HomeController extends BaseController{
 
 	public function index(Request $request, $page = 1)
 	{
+        $page = intval($page);
+
         $page--;
 
 
@@ -65,5 +69,30 @@ class HomeController extends BaseController{
         }
 
 	}
+
+    public function contact(Request $request) {
+
+        if( $request->isMethod('post') && $request->ajax() ) {
+            Mail::send('home.email',
+                array(
+                    'email' => $request->input('email'),
+                    'user_message' => $request->get('text')
+                ), function ($message) {
+                    $message->to('krzysiek@dyk.pl', 'Krzysiek')->subject('Kontakt - staregry.dyk.pl');
+                });
+
+            echo json_encode(array(
+                'status' => 0
+            ));
+        }
+
+        if( !$request->ajax() ) {
+            $content = view('home.contact', array(
+                'token' => csrf_token()
+            ));
+
+            return $this->setPageContent($content);
+        }
+    }
 
 }

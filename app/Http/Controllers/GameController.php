@@ -30,4 +30,21 @@ class GameController extends BaseController {
 
 	}
 
+    public function download($slug) {
+
+        $Games = new Games();
+        $game = $Games->getGame( $slug );
+        $game = $game[0];
+
+    
+        print_r( $game['file'] );
+
+
+        $content = view('games.download', $game);
+
+        return $this->setPageContent($content, 'Pobierz - ' . $game['name'] . ' - ' . $game['cat_name'],  'Stara gra ' . $game['name'] . ' z kategorii ' . $game['cat_name']);
+
+
+    }
+
 }

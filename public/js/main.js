@@ -8,17 +8,15 @@ require.config({
         mustache: 'libs/mustache/mustache.min',
         templates: '../templates',
         dykmenu: 'libs/internal/dykmenu',
-        dykmeta: 'libs/internal/dykmeta'
+        dykmeta: 'libs/internal/dykmeta',
+        bootstrap: 'libs/bootstrap/bootstrap.min',
+        validate: 'libs/jquery/jquery.validate.min'
     }
 
 });
 
 require([
-    // Load our app module and pass it to our definition function
     'app',
-
 ], function(App){
-    // The "app" dependency is passed in as "App"
-    // Again, the other dependencies passed in are not "AMD" therefore don't pass a parameter to this function
     App.initialize();
 });

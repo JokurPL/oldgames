@@ -8,8 +8,9 @@ define([
     'views/categories/CategoriesView',
     'views/games/GameView',
     'views/games/GamesListView',
+    'views/home/ContactView',
     'views/footer/FooterView'
-], function($, _, Backbone, MenuView,  HomeView, PagesView, CategoriesView, GameView, GamesListView, FooterView) {
+], function($, _, Backbone, MenuView,  HomeView, PagesView, CategoriesView, GameView, GamesListView, ContactView, FooterView) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {
@@ -17,8 +18,9 @@ define([
             'categories/:categorySlug' : 'gameByCategory',
             'categories/:categorySlug/:page' : 'gameByCategory',
             'game/:name' : 'getGame',
-            'p/:name': 'showPage',
+            'page/:name': 'showPage',
             'contact': 'showContact',
+            'home/contact': 'showContact',
             'home/:page': 'showNews',
             '*actions': 'defaultAction'
         }
@@ -48,14 +50,13 @@ define([
 
         app_router.on('route:showPage', function (name) {
             var pageView = new PagesView({
-                pageName : name
+                pageSlug : name
             });
         });
 
         app_router.on('route:showContact', function(){
 
-            //var projectsView = new ProjectsView();
-            //projectsView.render();
+            var contactView = new ContactView({});
 
         });
 
@@ -65,20 +66,27 @@ define([
             });
         });
 
+        app_router.on('route:showContact', function (page) {
+
+        });
+
         app_router.on('route:defaultAction', function () {
             var homeView = new HomeView();
         });
 
         Backbone.history.start({ pushState: true });
         $(document.body).on('click', 'a', function(e){
-            e.preventDefault();
-            Backbone.history.navigate(e.currentTarget.pathname, {trigger: true});
+            if(!$(this).hasClass('leave-it')) {
+                e.preventDefault();
+                Backbone.history.navigate(e.currentTarget.pathname, {trigger: true});
+            }
         });
 
         var position = {
             'showCategories' : 1,
             'gameByCategory' : 1,
-            'showPage' : 2
+            'showPage' : 2,
+            'showContact' : 4
         };
 
         var posMenu = 0;
@@ -89,7 +97,7 @@ define([
             posMenu = position.gameByCategory;
 
         } else if(
-            /p\/.*/.test( Backbone.history.fragment )
+            /page\/.*/.test( Backbone.history.fragment )
         ) {
             posMenu = position.showPage;
         } else {

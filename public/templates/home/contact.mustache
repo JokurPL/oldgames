@@ -1,0 +1,64 @@
+<div class="textCont slideLeft">
+    <div class="translucent"></div>
+    <div class="contAll">
+
+
+
+        <h1>Kontakt</h1>
+
+        Wypełnij formularz aby się z nami skontaktować<br><br>
+
+        <form method="post" action="/home/contact">
+            <div class="form-group">
+                <label for="emailInput">Email</label>
+                <input type="email" class="form-control" name="email" id="emailInput" placeholder="Podaj adres email">
+            </div>
+            <div class="form-group">
+                <label for="contentTextarea">Treść</label>
+                <textarea rows="10" class="form-control" id="contentTextarea" name="text" placeholder="Treść wiadomości"></textarea>
+            </div>
+
+            <input type="hidden" name="_token" value="{{ token }}" />
+
+            <button type="submit" class="btn btn-default">Wyślij</button>
+        </form>
+
+        <div id="loadModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Wysyłam wiadomość, proszę czekać</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="msg text-center">
+
+
+
+                    </p>
+                    <div id="fountainG">
+                        <div id="fountainG_1" class="fountainG">
+                        </div>
+                        <div id="fountainG_2" class="fountainG">
+                        </div>
+                        <div id="fountainG_3" class="fountainG">
+                        </div>
+                        <div id="fountainG_4" class="fountainG">
+                        </div>
+                        <div id="fountainG_5" class="fountainG">
+                        </div>
+                        <div id="fountainG_6" class="fountainG">
+                        </div>
+                        <div id="fountainG_7" class="fountainG">
+                        </div>
+                        <div id="fountainG_8" class="fountainG">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+</div>
