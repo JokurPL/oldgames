@@ -3,16 +3,17 @@
 use App\Games;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Response;
 
 class GameController extends BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index(Request $request, $slug)
-	{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index(Request $request, $slug)
+    {
         $Games = new Games();
         $game = $Games->getGame( $slug );
         $game = $game[0];
@@ -28,7 +29,7 @@ class GameController extends BaseController {
             return $this->setPageContent($content, $game['name'] . ' - ' . $game['cat_name'],  'Stara gra ' . $game['name'] . ' z kategorii ' . $game['cat_name']);
         }
 
-	}
+    }
 
     public function download($slug) {
 
@@ -38,11 +39,17 @@ class GameController extends BaseController {
 
         $file = getcwd() . '/../content/' . mb_strtolower( $game['platform'] ) . '/' . $game['file'];
 
-        if( file_exists( $file ) ) {
 
-            echo $file;
+        if( file_exists( $file ) && $game['file'] != '' ) {
+            return Response::download( $file, basename( $file ) );
+        } else {
+
+            $content = view('games.download', $game);
+
+            return $this->setPageContent($content, 'Pobierz - ' . $game['name'] . ' - ' . $game['cat_name'],  'Stara gra ' . $game['name'] . ' z kategorii ' . $game['cat_name']);
 
         }
+
 
 
     }
