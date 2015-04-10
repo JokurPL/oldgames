@@ -1,6 +1,7 @@
 .idea
+content
 config/config.php
-/vendor
-/node_modules
+vendor
+node_modules
 .env
-/storage
+storage
