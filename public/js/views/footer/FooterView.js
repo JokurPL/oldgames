@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/footer/footerTemplate.html'
+  'text!templates/footer/footer.mustache'
 ], function($, _, Backbone, footerTemplate){
 
   var FooterView = Backbone.View.extend({
