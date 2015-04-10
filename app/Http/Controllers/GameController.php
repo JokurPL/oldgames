@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Response;
 
 class GameController extends BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index(Request $request, $slug)
-	{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index(Request $request, $slug)
+    {
         $Games = new Games();
         $game = $Games->getGame( $slug );
         $game = $game[0];
@@ -29,7 +29,7 @@ class GameController extends BaseController {
             return $this->setPageContent($content, $game['name'] . ' - ' . $game['cat_name'],  'Stara gra ' . $game['name'] . ' z kategorii ' . $game['cat_name']);
         }
 
-	}
+    }
 
     public function download($slug) {
 
