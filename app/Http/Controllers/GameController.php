@@ -36,13 +36,13 @@ class GameController extends BaseController {
         $game = $Games->getGame( $slug );
         $game = $game[0];
 
-    
-        print_r( $game['file'] );
+        $file = getcwd() . '/../content/' . mb_strtolower( $game['platform'] ) . '/' . $game['file'];
 
+        if( file_exists( $file ) ) {
 
-        $content = view('games.download', $game);
+            echo $file;
 
-        return $this->setPageContent($content, 'Pobierz - ' . $game['name'] . ' - ' . $game['cat_name'],  'Stara gra ' . $game['name'] . ' z kategorii ' . $game['cat_name']);
+        }
 
 
     }
