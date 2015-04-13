@@ -14,9 +14,8 @@ define([
 
         initialize:function(options) {
 
-            this.handleEmail();
-
             if( APP_HTTP_STARTED ) {
+                this.handleEmail();
                 APP_HTTP_STARTED = false;
                 return;
             }
@@ -30,7 +29,7 @@ define([
             var compiledTemplate = Mustache.render(contactTemplate, {token: _txn});
 
             this.$el.html(compiledTemplate);
-
+            this.handleEmail();
 
         },
 
@@ -62,6 +61,7 @@ define([
                     isError = false;
                 }
             });
+
 
             this.$el.find('form').submit(function(){
 
