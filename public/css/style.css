@@ -488,6 +488,7 @@ h2 small:hover {
     position: relative;
     width:100%;
     padding: 6px 20px;
+    font-size: 14px;
 }
 .opa5 {
     opacity: 0.5;
